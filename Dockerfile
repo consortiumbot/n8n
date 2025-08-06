@@ -1,20 +1,12 @@
 FROM n8nio/n8n:1.105.3
 
-# Configuração explícita de porta
 ENV N8N_PORT=8080 \
-    N8N_HOST=0.0.0.0 \
-    N8N_PROTOCOL=http \
-    NODE_ENV=production
+   N8N_HOST=0.0.0.0 \
+   NODE_OPTIONS="--enable-source-maps"
 
-# Validação de porta durante o build
-RUN if [ "$N8N_PORT" -lt 1024 ]; then \
-    apk add libcap && \
-    setcap 'cap_net_bind_service=+ep' $(which node); \
-  fi
+HEALTHCHECK --start-period=2m --interval=30s --timeout=10s --retries=3 \
+ CMD curl -fSs http://localhost:8080/health || exit 1
 
-# Healthcheck aprimorado
-HEALTHCHECK --interval=15s --timeout=5s --retries=3 \
-  CMD curl -fSs http://localhost:8080/health | grep -q '"status":"ok"' || exit 1
-
+USER node
 EXPOSE 8080
 CMD ["n8n", "start"]
