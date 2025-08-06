@@ -7,6 +7,4 @@ ENV N8N_PORT=8080 \
 HEALTHCHECK --start-period=2m --interval=30s --timeout=10s --retries=3 \
  CMD curl -fSs http://localhost:8080/health || exit 1
 
-USER node
 EXPOSE 8080
-CMD ["n8n", "start"]
