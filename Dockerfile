@@ -1,4 +1,4 @@
-FROM n8nio/n8n:1.105.3
+FROM n8nio/n8n:stable
 
 ENV N8N_PORT=8080 \
    N8N_HOST=0.0.0.0 \
